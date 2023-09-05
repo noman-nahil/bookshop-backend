@@ -102,4 +102,8 @@ let list = [
   },
 ];
 
+router.get("/", (req, res) => {
+  res.send(list);
+});
+
 module.exports = router;
