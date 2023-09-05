@@ -7,5 +7,6 @@ const PORT = 5000;
 app.use(express.json());
 
 app.use("/user", routes);
+app.use("/book", book_routes);
 
 app.listen(PORT, () => console.log("Server is running at port " + PORT));
