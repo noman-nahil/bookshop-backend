@@ -100,11 +100,38 @@ let list = [
       'Get the most out of this foundational reference and improve the productivity of your software teams. This open access book collects the wisdom of the 2017 "Dagstuhl" seminar on productivity in software engineering, a meeting of community leaders, who came together with the goal of rethinking traditional definitions and measures of productivity.',
     website: "https://doi.org/10.1007/978-1-4842-4221-6",
   },
+  {
+    isbn: "9798602477439",
+    title: "You Don't Know JS Yet",
+    subtitle: "Get Started",
+    author: "Kyle Simpson",
+    published: "2020-01-28T00:00:00.000Z",
+    publisher: "Independently published",
+    pages: 143,
+    description:
+      "The worldwide best selling You Don't Know JS book series is back for a 2nd edition: You Don't Know JS Yet. All 6 books are brand new, rewritten to cover all sides of JS for 2020 and beyond.",
+    website:
+      "https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started",
+  },
 ];
 
-router.get("/", (req, res) => {
-  res.send(list);
-});
+router
+  .get("/", (req, res) => {
+    res.send(list);
+  })
+  .post("/", (req, res) => {
+    const search_by_author = req.query.search_by_author;
+    if (search_by_author) {
+      let str = search_by_author.toLowerCase();
+      const filtered_book = list.filter((book) => {
+        let author = book.author;
+        let pos = author.toLowerCase().search(str);
+        return pos != -1;
+      });
+      console.log(filtered_book);
+      res.send(filtered_book);
+    }
+  });
 
 router.get("/:isbn", (req, res) => {
   const isbn_no = req.params.isbn;
