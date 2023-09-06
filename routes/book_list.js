@@ -106,4 +106,14 @@ router.get("/", (req, res) => {
   res.send(list);
 });
 
+router.get("/:isbn", (req, res) => {
+  const isbn_no = req.params.isbn;
+  console.log(isbn_no);
+  const filtered_book = list.filter((book) => book.isbn === isbn_no);
+  if (filtered_book.length > 0) {
+    res.send(filtered_book);
+  }
+  res.send("No book found");
+});
+
 module.exports = router;
