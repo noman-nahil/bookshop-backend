@@ -121,11 +121,22 @@ router
   })
   .post("/", (req, res) => {
     const search_by_author = req.query.search_by_author;
+    const search_by_title = req.query.search_by_title;
     if (search_by_author) {
       let str = search_by_author.toLowerCase();
       const filtered_book = list.filter((book) => {
         let author = book.author;
         let pos = author.toLowerCase().search(str);
+        return pos != -1;
+      });
+      console.log(filtered_book);
+      res.send(filtered_book);
+    }
+    if (search_by_title) {
+      let str = search_by_title.toLowerCase();
+      const filtered_book = list.filter((book) => {
+        let title = book.title;
+        let pos = title.toLowerCase().search(str);
         return pos != -1;
       });
       console.log(filtered_book);
