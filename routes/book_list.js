@@ -175,7 +175,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const search_by_author = req.query.search_by_author;
   const search_by_title = req.query.search_by_title;
-  if (search_by_author) {
+  /*if (search_by_author) {
     let str = search_by_author.toLowerCase();
     const filtered_book = list.filter((book) => {
       let author = book.author;
@@ -194,6 +194,40 @@ router.post("/", (req, res) => {
     });
     console.log(filtered_book);
     res.send(filtered_book);
+  }*/
+  function searchForData(searchItem) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const results = list.filter(
+          (item) =>
+            item.author.toLowerCase().includes(searchItem.toLowerCase()) ||
+            item.title.toLowerCase().includes(searchItem.toLowerCase())
+        );
+        if (results.length > 0) {
+          resolve(results);
+        } else {
+          reject("No matching data found");
+        }
+      }, 1000);
+    });
+  }
+  if (search_by_author) {
+    searchForData(search_by_author)
+      .then((results) => {
+        res.send(results);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  }
+  if (search_by_title) {
+    searchForData(search_by_title)
+      .then((results) => {
+        res.send(results);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
   }
 });
 router.get("/allbook", (req, res) => {
@@ -229,7 +263,7 @@ router.get("/:isbn", (req, res) => {
   // } else {
   //   res.send("No book found");
   // }
-  function searchForData(searchTerm) {
+  function searchForData(isbn_no) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const results = list.filter((item) => item.isbn == isbn_no);
@@ -243,7 +277,7 @@ router.get("/:isbn", (req, res) => {
     });
   }
 
-  searchForData("item 3")
+  searchForData(isbn_no)
     .then((results) => {
       res.send(results);
     })
