@@ -222,14 +222,36 @@ router.get("/allbook", (req, res) => {
 
 router.get("/:isbn", (req, res) => {
   const isbn_no = req.params.isbn;
-  const filtered_book = list.filter((book) => book.isbn === isbn_no);
-  if (filtered_book.length > 0) {
-    console.log(filtered_book[0]["bookReview"]);
-    res.send(filtered_book);
-  } else {
-    res.send("No book found");
+  // const filtered_book = list.filter((book) => book.isbn === isbn_no);
+  // if (filtered_book.length > 0) {
+  //   console.log(filtered_book[0]["bookReview"]);
+  //   res.send(filtered_book);
+  // } else {
+  //   res.send("No book found");
+  // }
+  function searchForData(searchTerm) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const results = list.filter((item) => item.isbn == isbn_no);
+
+        if (results.length > 0) {
+          resolve(results);
+        } else {
+          reject("No matching data found");
+        }
+      }, 1000);
+    });
   }
+
+  searchForData("item 3")
+    .then((results) => {
+      res.send(results);
+    })
+    .catch((error) => {
+      res.send(error);
+    });
 });
+
 router.post("/:isbn", (req, res) => {
   const isbn_no = req.params.isbn;
   const email = req.body.email;
